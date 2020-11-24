@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import shafiee.mr.interviewtest.R
+import shafiee.mr.interviewtest.base.BaseFragment
 
-class PlacesListFragment : Fragment() {
+class PlacesListFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = PlacesListFragment()
