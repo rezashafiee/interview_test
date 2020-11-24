@@ -1,12 +1,17 @@
 package shafiee.mr.interviewtest.ui.places
 
 import android.os.Bundle
-import shafiee.mr.interviewtest.R
 import shafiee.mr.interviewtest.base.BaseActivity
+import shafiee.mr.interviewtest.databinding.ActivityPlacesBinding
 
 class PlacesActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityPlacesBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_places)
+        binding = ActivityPlacesBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
     }
 }
