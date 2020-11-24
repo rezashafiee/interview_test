@@ -1,7 +1,8 @@
-package shafiee.mr.interviewtest
+package shafiee.mr.interviewtest.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import shafiee.mr.interviewtest.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
