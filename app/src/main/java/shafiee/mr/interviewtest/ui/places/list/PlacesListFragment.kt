@@ -1,4 +1,4 @@
-package shafiee.mr.interviewtest.ui.places_list
+package shafiee.mr.interviewtest.ui.places.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
