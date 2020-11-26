@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-data class Data(
+data class PlacesListData(
     @Expose
     @SerializedName("warning")
     var warning: Warning?,
