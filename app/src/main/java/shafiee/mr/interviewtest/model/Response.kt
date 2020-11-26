@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName
 data class Response(
     @Expose
     @SerializedName("response")
-    var data: Data?
+    var placesListData: PlacesListData?
 )
