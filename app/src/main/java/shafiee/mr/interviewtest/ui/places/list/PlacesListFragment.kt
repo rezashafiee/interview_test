@@ -50,7 +50,7 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
         viewModel =
             ViewModelProvider(this, viewModelProviderFactory).get(PlacesListViewModel::class.java)
 
-        subscribeObservers()
+        subscribePlacesListObservers()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +63,7 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
 
     }
 
-    private fun subscribeObservers() {
+    private fun subscribePlacesListObservers() {
         viewModel.placesListRepository.loadPlacesList().removeObservers(viewLifecycleOwner)
         viewModel.placesListRepository.loadPlacesList().observe(viewLifecycleOwner, {
             it.let {
@@ -71,7 +71,7 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
                     Resource.Status.LOADING -> {
                     }
                     Resource.Status.SUCCESS -> {
-                        println("Imchini tedad = ${it.data?.placesListData?.totalResults}")
+
                     }
                     Resource.Status.ERROR -> {
                     }

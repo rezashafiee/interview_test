@@ -3,9 +3,8 @@ package shafiee.mr.interviewtest.model
 import com.google.gson.annotations.Expose
 
 data class PlacesListData(
-    /*@Expose
-    @SerializedName("warning")
-    var warning: Warning?,*/
+    @Expose
+    var warning: Warning?,
     @Expose
     var suggestedRadius: Int?,
     @Expose
@@ -16,11 +15,9 @@ data class PlacesListData(
     var headerLocationGranularity: String?,
     @Expose
     var totalResults: Int?,
-    /*@Expose
-    @SerializedName("suggestedBounds")
+    @Expose
     var suggestedBounds: SuggestedBounds?,
     @Expose
-    @SerializedName("groups")
-    var groups: List<Group>?*/
+    var groups: List<Group>?
 )
 
