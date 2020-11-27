@@ -14,11 +14,17 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.common.api.ResolvableApiException
 import shafiee.mr.interviewtest.R
 import shafiee.mr.interviewtest.base.BaseFragment
+import shafiee.mr.interviewtest.network.Resource
 import shafiee.mr.interviewtest.utils.LocationSupportView
 import shafiee.mr.interviewtest.utils.LocationUtils
 import shafiee.mr.interviewtest.utils.shortToast
+import shafiee.mr.interviewtest.viewmodel.ViewModelProviderFactory
+import javax.inject.Inject
 
 class PlacesListFragment : BaseFragment(), LocationSupportView {
+
+    @Inject
+    lateinit var viewModelProviderFactory: ViewModelProviderFactory
 
     private var locationUtils: LocationUtils? = null
 
@@ -41,15 +47,37 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(PlacesListViewModel::class.java)
+        viewModel =
+            ViewModelProvider(this, viewModelProviderFactory).get(PlacesListViewModel::class.java)
+
+        subscribeObservers()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        locationUtils = LocationUtils(requireContext(), this)
+        //locationUtils = LocationUtils(requireContext(), this)
 
-        locationUtils?.createLocationRequest()
+        //locationUtils?.createLocationRequest()
+
+
+    }
+
+    private fun subscribeObservers() {
+        viewModel.placesListRepository.loadPlacesList().removeObservers(viewLifecycleOwner)
+        viewModel.placesListRepository.loadPlacesList().observe(viewLifecycleOwner, {
+            it.let {
+                when (it.status) {
+                    Resource.Status.LOADING -> {
+                    }
+                    Resource.Status.SUCCESS -> {
+                        println("Imchini tedad = ${it.data?.placesListData?.totalResults}")
+                    }
+                    Resource.Status.ERROR -> {
+                    }
+                }
+            }
+        })
     }
 
 
