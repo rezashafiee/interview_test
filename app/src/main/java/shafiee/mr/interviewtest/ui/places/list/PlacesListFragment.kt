@@ -50,7 +50,7 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
         viewModel =
             ViewModelProvider(this, viewModelProviderFactory).get(PlacesListViewModel::class.java)
 
-        subscribePlacesListObservers()
+        subscribeObservers()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,9 +63,9 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
 
     }
 
-    private fun subscribePlacesListObservers() {
-        viewModel.placesListRepository.loadPlacesList().removeObservers(viewLifecycleOwner)
-        viewModel.placesListRepository.loadPlacesList().observe(viewLifecycleOwner, {
+    private fun subscribeObservers() {
+        viewModel.loadPlacesList().removeObservers(viewLifecycleOwner)
+        viewModel.loadPlacesList().observe(viewLifecycleOwner, {
             it.let {
                 when (it.status) {
                     Resource.Status.LOADING -> {
