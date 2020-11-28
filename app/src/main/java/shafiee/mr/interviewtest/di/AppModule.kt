@@ -15,6 +15,7 @@ import shafiee.mr.interviewtest.Constants
 import shafiee.mr.interviewtest.db.PlacesDatabase
 import shafiee.mr.interviewtest.db.PlacesListDao
 import shafiee.mr.interviewtest.utils.LiveDataCallAdapterFactory
+import shafiee.mr.interviewtest.utils.PreferencesManager
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -67,5 +68,10 @@ object AppModule {
     @Provides
     fun providePlacesListDao(db: PlacesDatabase): PlacesListDao {
         return db.placesListDao()
+    }
+
+    @Provides
+    fun providePreferencesManager(application: Application): PreferencesManager? {
+        return PreferencesManager.getInstance(application)
     }
 }

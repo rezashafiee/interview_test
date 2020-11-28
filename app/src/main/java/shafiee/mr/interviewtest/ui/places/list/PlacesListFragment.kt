@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.common.api.ResolvableApiException
 import shafiee.mr.interviewtest.R
 import shafiee.mr.interviewtest.base.BaseFragment
+import shafiee.mr.interviewtest.model.persistence_models.PersistenceLocation
 import shafiee.mr.interviewtest.network.Resource
 import shafiee.mr.interviewtest.utils.LocationSupportView
 import shafiee.mr.interviewtest.utils.LocationUtils
@@ -50,28 +51,25 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
         viewModel =
             ViewModelProvider(this, viewModelProviderFactory).get(PlacesListViewModel::class.java)
 
-        subscribeObservers()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //locationUtils = LocationUtils(requireContext(), this)
+        locationUtils = LocationUtils(requireContext(), this)
 
-        //locationUtils?.createLocationRequest()
-
-
+        locationUtils?.createLocationRequest()
     }
 
-    private fun subscribeObservers() {
-        viewModel.loadPlacesList().removeObservers(viewLifecycleOwner)
-        viewModel.loadPlacesList().observe(viewLifecycleOwner, {
+    private fun observePlacesList(location: PersistenceLocation?) {
+        viewModel.loadPlacesList(location).removeObservers(viewLifecycleOwner)
+        viewModel.loadPlacesList(location).observe(viewLifecycleOwner, {
             it.let {
                 when (it.status) {
                     Resource.Status.LOADING -> {
                     }
                     Resource.Status.SUCCESS -> {
-
+                        println("Imchini  fetched location = $location and data = ${it.data?.placesListData?.groups}")
                     }
                     Resource.Status.ERROR -> {
                     }
@@ -92,18 +90,23 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
                 grantResults[1] == PackageManager.PERMISSION_GRANTED
             ) {
                 locationUtils?.getLocation()
-            } else
+            } else {
                 requireContext().shortToast("Location permission denied !")
+                observePlacesList(null)
+            }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_CHECK_LOCATION_SETTINGS)
+        if (requestCode == REQUEST_CHECK_LOCATION_SETTINGS) {
+            if (resultCode == Activity.RESULT_OK)
                 locationUtils?.getLocation()
+            else
+                observePlacesList(null)
         }
+
     }
 
     override fun showLocationSettingDialog(exception: ResolvableApiException) {
@@ -132,10 +135,15 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
         )
     }
 
-    override fun onLocationProvided(lastLocation: Location?) {
+    override fun onLocationProvided(location: Location?) {
         Log.d(
             TAG,
-            "onLocationProvided: lat = ${lastLocation?.latitude} , lng = ${lastLocation?.longitude}"
+            "onLocationProvided: lat = ${location?.latitude} , lng = ${location?.longitude}"
         )
+
+        // convert received Location to database transferable Location
+        val currentLocation =
+            PersistenceLocation(lat = location?.latitude, lng = location?.longitude)
+        observePlacesList(currentLocation)
     }
 }

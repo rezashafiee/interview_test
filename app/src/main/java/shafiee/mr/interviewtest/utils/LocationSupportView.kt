@@ -9,5 +9,5 @@ interface LocationSupportView {
 
     fun showPermissionRequestDialog()
 
-    fun onLocationProvided(lastLocation: Location?)
+    fun onLocationProvided(location: Location?)
 }
