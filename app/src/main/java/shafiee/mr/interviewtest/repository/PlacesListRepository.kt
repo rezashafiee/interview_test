@@ -105,7 +105,7 @@ class PlacesListRepository @Inject constructor(
         }
     }
 
-    fun isCurrentLocationNearToLastLocation(
+    private fun isCurrentLocationNearToLastLocation(
         currentLocation: PersistenceLocation?,
         lastLocationLat: Double?, lastLocationLng: Double?
     ): Boolean {
