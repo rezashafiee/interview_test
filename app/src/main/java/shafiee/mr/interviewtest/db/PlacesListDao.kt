@@ -3,7 +3,6 @@ package shafiee.mr.interviewtest.db
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import shafiee.mr.interviewtest.model.Response
 
@@ -11,6 +10,9 @@ import shafiee.mr.interviewtest.model.Response
 interface PlacesListDao {
     @Query("SELECT * FROM response")
     fun getAll(): LiveData<Response>
+
+    @Query("SELECT * FROM response WHERE page = (:pageNumber)")
+    fun getByPage(pageNumber: Int): LiveData<Response>
 
     /*@Query("SELECT * FROM user WHERE uid IN (:venueIds)")
     fun loadAllByIds(venueIds: IntArray): List<Venue>*/
@@ -25,7 +27,9 @@ interface PlacesListDao {
     @Delete
     fun delete(venue: Venue)*/
 
+    @Query("DELETE FROM response")
+    fun removeAll()
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     fun insert(response: Response)
 }

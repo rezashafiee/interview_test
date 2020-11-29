@@ -11,16 +11,16 @@ data class Venue(
     @Expose
     @SerializedName("name")
     var name: String?,
-    /*@Expose
+    @Expose
     @SerializedName("location")
     var location: Location?,
     @Expose
     @SerializedName("categories")
-    var categories: List<Category>?,*/
+    var categories: List<Category>?,
     @Expose
     @SerializedName("popularityByGeo")
     var popularityByGeo: Double?,
-    /*@Expose
+    @Expose
     @SerializedName("venuePage")
-    var venuePage: VenuePage?*/
+    var venuePage: VenuePage?
 )

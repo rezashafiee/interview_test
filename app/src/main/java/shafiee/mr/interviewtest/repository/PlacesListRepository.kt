@@ -21,7 +21,10 @@ class PlacesListRepository @Inject constructor(
     private val appExecutors: AppExecutors
 ) {
 
-    fun loadPlacesList(currentLocation: PersistenceLocation?): LiveData<Resource<Response>> {
+    fun loadPlacesList(
+        currentLocation: PersistenceLocation?,
+        page: Int
+    ): LiveData<Resource<Response>> {
 
         return object : NetworkBoundResource<Response, Response>(appExecutors) {
             override fun saveCallResult(item: Response) {
@@ -36,24 +39,23 @@ class PlacesListRepository @Inject constructor(
                 when {
                     lastLocationLatitude == null && lastLocationLongitude == null -> {
                         return if (currentLocation != null) {
-                            // save location
-                            preferencesManager?.saveCurrentLocationLat(currentLocation.lat.toString())
-                            preferencesManager?.saveCurrentLocationLng(currentLocation.lng.toString())
+                            saveCurrentLocation(currentLocation)
                             true
                         } else
                             false
                     }
-                    currentLocation == null -> return false
+                    currentLocation == null -> {
+                        return checkPage(page)
+                    }
                     else -> {
                         return if (isCurrentLocationNearToLastLocation(
                                 currentLocation,
                                 lastLocationLatitude, lastLocationLongitude
                             )
-                        )
-                            false
+                        ) checkPage(page)
                         else {
-                            preferencesManager?.saveCurrentLocationLat(currentLocation.lat.toString())
-                            preferencesManager?.saveCurrentLocationLng(currentLocation.lng.toString())
+                            saveCurrentLocation(currentLocation)
+                            clearData()
                             true
                         }
                     }
@@ -61,7 +63,8 @@ class PlacesListRepository @Inject constructor(
             }
 
             override fun loadFromDb(): LiveData<Response> {
-                return placesListDao.getAll()
+                //return placesListDao.getAll()
+                return placesListDao.getByPage(page)
             }
 
             override fun createCall(): LiveData<ApiResponse<Response>> {
@@ -70,10 +73,36 @@ class PlacesListRepository @Inject constructor(
                     Constants.CLIENT_ID,
                     Constants.CLIENT_SECRET,
                     Constants.V,
-                    "${currentLocation?.lat}, ${currentLocation?.lng}"
+                    "${currentLocation?.lat}, ${currentLocation?.lng}",
+                    Constants.PAGE_SIZE,
+                    page.toString()
                 )
             }
         }.asLiveData
+    }
+
+    private fun saveCurrentLocation(location: PersistenceLocation) {
+        // Save current location to preferences
+        preferencesManager?.saveLocationLat(location.lat.toString())
+        preferencesManager?.saveLocationLng(location.lng.toString())
+    }
+
+    private fun checkPage(currentPage: Int): Boolean {
+        return if (currentPage > preferencesManager?.getLastPage()!!) {
+            preferencesManager.savePageNumber(currentPage)
+            true
+        } else
+            false
+    }
+
+    private fun clearData() {
+        // clear last page
+        preferencesManager?.removeLastPage()
+
+        // clear previous responses from DB
+        appExecutors.diskIO().execute {
+            placesListDao.removeAll()
+        }
     }
 
     fun isCurrentLocationNearToLastLocation(

@@ -12,6 +12,8 @@ interface PlaceListApi {
         @Query("client_id") clientId: String,
         @Query("client_secret") clientSecret: String,
         @Query("v") v: String,
-        @Query("ll") ll: String
+        @Query("ll") ll: String,
+        @Query("limit") pageSize: String,
+        @Query("offset") pageNumber: String
     ): LiveData<ApiResponse<Response>>
 }
