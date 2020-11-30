@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.RequestManager
 import com.google.android.gms.common.api.ResolvableApiException
 import shafiee.mr.interviewtest.base.BaseFragment
 import shafiee.mr.interviewtest.databinding.FragmentPlacesListBinding
@@ -28,6 +29,9 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
 
     @Inject
     lateinit var preferencesManager: PreferencesManager
+
+    @Inject
+    lateinit var requestManager: RequestManager
 
     private var locationUtils: LocationUtils? = null
     private lateinit var binding: FragmentPlacesListBinding
@@ -68,7 +72,7 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
 
         val layoutManager = LinearLayoutManager(binding.recyclerViewPlacesList.context)
         binding.recyclerViewPlacesList.layoutManager = layoutManager
-        placesListAdapter = PlacesListAdapter()
+        placesListAdapter = PlacesListAdapter(requestManager)
         binding.recyclerViewPlacesList.adapter = placesListAdapter
 
         binding.recyclerViewPlacesList.addOnScrollListener(object :
@@ -94,7 +98,7 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
                     }
                     Resource.Status.SUCCESS -> {
                         // just set the list
-                        //println("Imchini  fetched location = $location and data = ${it.data?.placesListData?.groups}")
+                        println("Imchini  fetched location = $location and data = ${it.data?.placesListData?.groups}")
                         val items = it.data?.placesListData?.groups?.get(0)?.items
                         if (pageNumber > 1)
                             placesListAdapter?.updateList(items)

@@ -3,12 +3,13 @@ package shafiee.mr.interviewtest.ui.places.list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import shafiee.mr.interviewtest.databinding.ItemPlaceBinding
+import com.bumptech.glide.RequestManager
+import shafiee.mr.interviewtest.R
 import shafiee.mr.interviewtest.model.Item
 
-class PlacesListAdapter : RecyclerView.Adapter<PlaceItemViewHolder>() {
+class PlacesListAdapter(private val requestManager: RequestManager) :
+    RecyclerView.Adapter<PlaceItemViewHolder>() {
 
-    private lateinit var itemBinding: ItemPlaceBinding
     var placeList = mutableListOf<Item?>()
 
     init {
@@ -17,12 +18,12 @@ class PlacesListAdapter : RecyclerView.Adapter<PlaceItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        itemBinding = ItemPlaceBinding.inflate(layoutInflater, parent, false)
-        return PlaceItemViewHolder(itemBinding.root)
+        val itemView = layoutInflater.inflate(R.layout.item_place, parent, false)
+        return PlaceItemViewHolder(itemView, requestManager)
     }
 
     override fun onBindViewHolder(holder: PlaceItemViewHolder, position: Int) {
-        holder.bind(placeList[position], itemBinding)
+        holder.bind(placeList[position])
     }
 
     override fun getItemCount(): Int {
@@ -33,7 +34,6 @@ class PlacesListAdapter : RecyclerView.Adapter<PlaceItemViewHolder>() {
         list?.forEach { item ->
             placeList.add(item)
         }
-        notifyDataSetChanged()
     }
 
     fun setList(list: List<Item>?) {
