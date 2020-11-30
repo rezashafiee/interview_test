@@ -11,9 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ResolvableApiException
-import shafiee.mr.interviewtest.R
 import shafiee.mr.interviewtest.base.BaseFragment
+import shafiee.mr.interviewtest.databinding.FragmentPlacesListBinding
 import shafiee.mr.interviewtest.model.persistence_models.PersistenceLocation
 import shafiee.mr.interviewtest.network.Resource
 import shafiee.mr.interviewtest.utils.LocationSupportView
@@ -28,6 +29,8 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
 
     private var locationUtils: LocationUtils? = null
+    private lateinit var binding: FragmentPlacesListBinding
+    private var placesListAdapter: PlacesListAdapter? = null
 
     companion object {
         private const val REQUEST_CHECK_LOCATION_SETTINGS = 1001
@@ -42,8 +45,9 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_places_list, container, false)
+    ): View {
+        binding = FragmentPlacesListBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -58,7 +62,12 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
 
         locationUtils = LocationUtils(requireContext(), this)
 
-        locationUtils?.createLocationRequest()
+        binding.recyclerViewPlacesList.layoutManager =
+            LinearLayoutManager(binding.recyclerViewPlacesList.context)
+
+        binding.buttonExplore.setOnClickListener {
+            locationUtils?.createLocationRequest()
+        }
     }
 
     private fun observePlacesList(location: PersistenceLocation?) {
@@ -70,6 +79,7 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
                     }
                     Resource.Status.SUCCESS -> {
                         println("Imchini  fetched location = $location and data = ${it.data?.placesListData?.groups}")
+                        placesListAdapter?.updateList(it.data?.placesListData?.groups?.get(0)?.items)
                     }
                     Resource.Status.ERROR -> {
                     }
@@ -144,6 +154,9 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
         // convert received Location to database transferable Location
         val currentLocation =
             PersistenceLocation(lat = location?.latitude, lng = location?.longitude)
+
+        placesListAdapter = PlacesListAdapter()
+        binding.recyclerViewPlacesList.adapter = placesListAdapter
         observePlacesList(currentLocation)
     }
 }

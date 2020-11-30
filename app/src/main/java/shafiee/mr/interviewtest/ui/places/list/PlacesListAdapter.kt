@@ -2,24 +2,17 @@ package shafiee.mr.interviewtest.ui.places.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import shafiee.mr.interviewtest.databinding.ItemPlaceBinding
 import shafiee.mr.interviewtest.model.Item
 
-class PlacesListAdapter : PagedListAdapter<Item, PlaceItemViewHolder>(diffCallback) {
+class PlacesListAdapter : RecyclerView.Adapter<PlaceItemViewHolder>() {
 
     private lateinit var itemBinding: ItemPlaceBinding
+    var placeList = mutableListOf<Item?>()
 
-    companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<Item>() {
-
-            override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean =
-                oldItem.venue?.id == newItem.venue?.id
-
-            override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean =
-                oldItem == newItem
-        }
+    init {
+        placeList = mutableListOf()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceItemViewHolder {
@@ -29,6 +22,17 @@ class PlacesListAdapter : PagedListAdapter<Item, PlaceItemViewHolder>(diffCallba
     }
 
     override fun onBindViewHolder(holder: PlaceItemViewHolder, position: Int) {
-        holder.bind(getItem(position), itemBinding)
+        holder.bind(placeList[position], itemBinding)
+    }
+
+    override fun getItemCount(): Int {
+        return placeList.size
+    }
+
+    fun updateList(list: List<Item>?) {
+        list?.forEach { item ->
+            placeList.add(item)
+        }
+        notifyDataSetChanged()
     }
 }
