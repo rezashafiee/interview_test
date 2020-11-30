@@ -35,4 +35,9 @@ class PlacesListAdapter : RecyclerView.Adapter<PlaceItemViewHolder>() {
         }
         notifyDataSetChanged()
     }
+
+    fun setList(list: List<Item>?) {
+        placeList = list?.toMutableList()!!
+        notifyDataSetChanged()
+    }
 }

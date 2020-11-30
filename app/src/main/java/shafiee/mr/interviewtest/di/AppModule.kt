@@ -71,7 +71,7 @@ object AppModule {
     }
 
     @Provides
-    fun providePreferencesManager(application: Application): PreferencesManager? {
-        return PreferencesManager.getInstance(application)
+    fun providePreferencesManager(application: Application): PreferencesManager {
+        return PreferencesManager.getInstance(application)!!
     }
 }

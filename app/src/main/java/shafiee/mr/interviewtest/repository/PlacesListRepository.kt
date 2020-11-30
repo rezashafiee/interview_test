@@ -17,7 +17,7 @@ import javax.inject.Inject
 class PlacesListRepository @Inject constructor(
     private val placesListApi: PlaceListApi,
     private val placesListDao: PlacesListDao,
-    private val preferencesManager: PreferencesManager?,
+    private val preferencesManager: PreferencesManager,
     private val appExecutors: AppExecutors
 ) {
 

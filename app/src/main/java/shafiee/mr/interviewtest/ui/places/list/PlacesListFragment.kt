@@ -17,9 +17,7 @@ import shafiee.mr.interviewtest.base.BaseFragment
 import shafiee.mr.interviewtest.databinding.FragmentPlacesListBinding
 import shafiee.mr.interviewtest.model.persistence_models.PersistenceLocation
 import shafiee.mr.interviewtest.network.Resource
-import shafiee.mr.interviewtest.utils.LocationSupportView
-import shafiee.mr.interviewtest.utils.LocationUtils
-import shafiee.mr.interviewtest.utils.shortToast
+import shafiee.mr.interviewtest.utils.*
 import shafiee.mr.interviewtest.viewmodel.ViewModelProviderFactory
 import javax.inject.Inject
 
@@ -28,9 +26,13 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
 
+    @Inject
+    lateinit var preferencesManager: PreferencesManager
+
     private var locationUtils: LocationUtils? = null
     private lateinit var binding: FragmentPlacesListBinding
     private var placesListAdapter: PlacesListAdapter? = null
+    private var currentLocation: PersistenceLocation? = null
 
     companion object {
         private const val REQUEST_CHECK_LOCATION_SETTINGS = 1001
@@ -60,26 +62,44 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        preferencesManager.removeLastPage()
+        currentLocation = PersistenceLocation(null, null)
         locationUtils = LocationUtils(requireContext(), this)
 
-        binding.recyclerViewPlacesList.layoutManager =
-            LinearLayoutManager(binding.recyclerViewPlacesList.context)
+        val layoutManager = LinearLayoutManager(binding.recyclerViewPlacesList.context)
+        binding.recyclerViewPlacesList.layoutManager = layoutManager
+        placesListAdapter = PlacesListAdapter()
+        binding.recyclerViewPlacesList.adapter = placesListAdapter
+
+        binding.recyclerViewPlacesList.addOnScrollListener(object :
+            EndlessRecyclerOnScrollListener(layoutManager) {
+            override fun onLoadMore(current_page: Int) {
+                currentLocation?.lat = preferencesManager.getLastLocationLat()
+                currentLocation?.lng = preferencesManager.getLastLocationLng()
+                observePlacesList(currentLocation, current_page)
+            }
+        })
 
         binding.buttonExplore.setOnClickListener {
             locationUtils?.createLocationRequest()
         }
     }
 
-    private fun observePlacesList(location: PersistenceLocation?) {
-        viewModel.loadPlacesList(location).removeObservers(viewLifecycleOwner)
-        viewModel.loadPlacesList(location).observe(viewLifecycleOwner, {
+    private fun observePlacesList(location: PersistenceLocation?, pageNumber: Int) {
+        viewModel.loadPlacesList(location, pageNumber).removeObservers(viewLifecycleOwner)
+        viewModel.loadPlacesList(location, pageNumber).observe(viewLifecycleOwner, {
             it.let {
                 when (it.status) {
                     Resource.Status.LOADING -> {
                     }
                     Resource.Status.SUCCESS -> {
                         println("Imchini  fetched location = $location and data = ${it.data?.placesListData?.groups}")
-                        placesListAdapter?.updateList(it.data?.placesListData?.groups?.get(0)?.items)
+                        val items = it.data?.placesListData?.groups?.get(0)?.items
+
+                        if (pageNumber >= preferencesManager.getLastPage()!!)
+                            placesListAdapter?.updateList(items)
+                        else
+                            placesListAdapter?.setList(items)
                     }
                     Resource.Status.ERROR -> {
                     }
@@ -102,7 +122,7 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
                 locationUtils?.getLocation()
             } else {
                 requireContext().shortToast("Location permission denied !")
-                observePlacesList(null)
+                observePlacesList(null, 1)
             }
         }
     }
@@ -114,7 +134,7 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
             if (resultCode == Activity.RESULT_OK)
                 locationUtils?.getLocation()
             else
-                observePlacesList(null)
+                observePlacesList(null, 1)
         }
 
     }
@@ -155,8 +175,6 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
         val currentLocation =
             PersistenceLocation(lat = location?.latitude, lng = location?.longitude)
 
-        placesListAdapter = PlacesListAdapter()
-        binding.recyclerViewPlacesList.adapter = placesListAdapter
-        observePlacesList(currentLocation)
+        observePlacesList(currentLocation, 1)
     }
 }
