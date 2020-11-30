@@ -2,6 +2,9 @@ package shafiee.mr.interviewtest.di
 
 import android.app.Application
 import androidx.room.Room
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
+import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -73,5 +76,22 @@ object AppModule {
     @Provides
     fun providePreferencesManager(application: Application): PreferencesManager {
         return PreferencesManager.getInstance(application)!!
+    }
+
+    @Provides
+    fun provideRequestOptions(): RequestOptions {
+        return RequestOptions
+            .placeholderOf(null)
+            .error(null)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGlideInstance(
+        application: Application,
+        requestOptions: RequestOptions
+    ): RequestManager {
+        return Glide.with(application)
+            .setDefaultRequestOptions(requestOptions)
     }
 }
