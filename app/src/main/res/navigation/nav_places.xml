@@ -18,5 +18,10 @@
         android:id="@+id/placeDetailsFragment"
         android:name="shafiee.mr.interviewtest.ui.places.details.PlaceDetailsFragment"
         android:label="fragment_place_details"
-        tools:layout="@layout/fragment_place_details" />
+        tools:layout="@layout/fragment_place_details">
+        <argument
+            android:name="place_id"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

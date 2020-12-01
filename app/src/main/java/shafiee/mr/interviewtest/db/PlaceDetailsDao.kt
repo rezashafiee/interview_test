@@ -1,14 +1,16 @@
 package shafiee.mr.interviewtest.db
 
 import androidx.lifecycle.LiveData
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import shafiee.mr.interviewtest.model.PlaceDetailsResponse
 
+@Dao
 interface PlaceDetailsDao {
 
     @Query("SELECT * FROM placedetailsresponse WHERE id = (:id)")
-    fun getById(id: Int): LiveData<PlaceDetailsResponse>
+    fun getById(id: String): LiveData<PlaceDetailsResponse>
 
     /*@Query("SELECT * FROM user WHERE uid IN (:venueIds)")
     fun loadAllByIds(venueIds: IntArray): List<Venue>*/

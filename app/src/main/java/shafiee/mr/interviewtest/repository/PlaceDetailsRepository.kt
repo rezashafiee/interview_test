@@ -17,7 +17,7 @@ class PlaceDetailsRepository @Inject constructor(
     private val appExecutors: AppExecutors
 ) {
 
-    fun loadPlaceDetails(id: Int): LiveData<Resource<PlaceDetailsResponse>> {
+    fun loadPlaceDetails(id: String): LiveData<Resource<PlaceDetailsResponse>> {
         return object :
             NetworkBoundResource<PlaceDetailsResponse, PlaceDetailsResponse>(appExecutors) {
 
@@ -35,7 +35,7 @@ class PlaceDetailsRepository @Inject constructor(
 
             override fun createCall(): LiveData<ApiResponse<PlaceDetailsResponse>> {
                 return placeDetailsApi.getPlaceDetails(
-                    id.toString(),
+                    id,
                     Constants.CLIENT_ID,
                     Constants.CLIENT_SECRET,
                     Constants.V

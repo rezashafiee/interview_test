@@ -15,6 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import shafiee.mr.interviewtest.Constants
+import shafiee.mr.interviewtest.db.PlaceDetailsDao
 import shafiee.mr.interviewtest.db.PlacesDatabase
 import shafiee.mr.interviewtest.db.PlacesListDao
 import shafiee.mr.interviewtest.utils.LiveDataCallAdapterFactory
@@ -71,6 +72,12 @@ object AppModule {
     @Provides
     fun providePlacesListDao(db: PlacesDatabase): PlacesListDao {
         return db.placesListDao()
+    }
+
+    @Singleton
+    @Provides
+    fun providePlaceDetailsDao(db: PlacesDatabase): PlaceDetailsDao {
+        return db.placeDetailsDao()
     }
 
     @Provides

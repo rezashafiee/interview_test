@@ -6,12 +6,15 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 @Entity
-class PlaceDetailsResponse(
-
-    @PrimaryKey
-    var id: Int,
-
+data class PlaceDetailsResponse(
     @Expose
     @SerializedName("response")
     var data: Data?
-)
+) {
+    @PrimaryKey
+    var id: String = ""
+        get() = data?.venue?.id!!
+        set(value) {
+            value.let { field = it }
+        }
+}

@@ -7,7 +7,10 @@ import com.bumptech.glide.RequestManager
 import shafiee.mr.interviewtest.R
 import shafiee.mr.interviewtest.model.Item
 
-class PlacesListAdapter(private val requestManager: RequestManager) :
+class PlacesListAdapter(
+    private val requestManager: RequestManager,
+    private val placesListFragmentView: PlacesListFragmentView
+) :
     RecyclerView.Adapter<PlaceItemViewHolder>() {
 
     var placeList = mutableListOf<Item?>()
@@ -19,7 +22,7 @@ class PlacesListAdapter(private val requestManager: RequestManager) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val itemView = layoutInflater.inflate(R.layout.item_place, parent, false)
-        return PlaceItemViewHolder(itemView, requestManager)
+        return PlaceItemViewHolder(itemView, requestManager, placesListFragmentView)
     }
 
     override fun onBindViewHolder(holder: PlaceItemViewHolder, position: Int) {

@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.google.android.gms.common.api.ResolvableApiException
@@ -22,7 +23,7 @@ import shafiee.mr.interviewtest.utils.*
 import shafiee.mr.interviewtest.viewmodel.ViewModelProviderFactory
 import javax.inject.Inject
 
-class PlacesListFragment : BaseFragment(), LocationSupportView {
+class PlacesListFragment : BaseFragment(), LocationSupportView, PlacesListFragmentView {
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
@@ -72,7 +73,7 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
 
         val layoutManager = LinearLayoutManager(binding.recyclerViewPlacesList.context)
         binding.recyclerViewPlacesList.layoutManager = layoutManager
-        placesListAdapter = PlacesListAdapter(requestManager)
+        placesListAdapter = PlacesListAdapter(requestManager, this)
         binding.recyclerViewPlacesList.adapter = placesListAdapter
 
         binding.recyclerViewPlacesList.addOnScrollListener(object :
@@ -97,8 +98,7 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
                     Resource.Status.LOADING -> {
                     }
                     Resource.Status.SUCCESS -> {
-                        // just set the list
-                        println("Imchini  fetched location = $location and data = ${it.data?.data?.groups}")
+                        //println("Imchini  fetched location = $location and data = ${it.data?.data?.groups}")
                         val items = it.data?.data?.groups?.get(0)?.items
                         if (pageNumber > 1)
                             placesListAdapter?.updateList(items)
@@ -180,5 +180,11 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
             PersistenceLocation(lat = location?.latitude, lng = location?.longitude)
 
         observePlacesList(currentLocation, 1)
+    }
+
+    override fun onPlaceItemClick(placeId: String?) {
+        val action =
+            PlacesListFragmentDirections.actionPlacesListFragmentToPlaceDetailsFragment(placeId)
+        findNavController().navigate(action)
     }
 }
