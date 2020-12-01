@@ -1,18 +1,14 @@
 package shafiee.mr.interviewtest.db
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import shafiee.mr.interviewtest.model.PlaceListResponse
+import shafiee.mr.interviewtest.model.PlaceDetailsResponse
 
-@Dao
-interface PlacesListDao {
-    @Query("SELECT * FROM placelistresponse")
-    fun getAll(): LiveData<PlaceListResponse>
+interface PlaceDetailsDao {
 
-    @Query("SELECT * FROM placelistresponse WHERE page = (:pageNumber)")
-    fun getByPage(pageNumber: Int): LiveData<PlaceListResponse>
+    @Query("SELECT * FROM placedetailsresponse WHERE id = (:id)")
+    fun getById(id: Int): LiveData<PlaceDetailsResponse>
 
     /*@Query("SELECT * FROM user WHERE uid IN (:venueIds)")
     fun loadAllByIds(venueIds: IntArray): List<Venue>*/
@@ -27,9 +23,9 @@ interface PlacesListDao {
     @Delete
     fun delete(venue: Venue)*/
 
-    @Query("DELETE FROM placelistresponse")
+    @Query("DELETE FROM placedetailsresponse")
     fun removeAll()
 
     @Insert
-    fun insert(placeListResponse: PlaceListResponse)
+    fun insert(placeDetailsResponse: PlaceDetailsResponse)
 }

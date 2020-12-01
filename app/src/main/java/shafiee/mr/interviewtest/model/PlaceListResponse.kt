@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 @Entity
-data class Response(
+data class PlaceListResponse(
 
     @PrimaryKey(autoGenerate = true)
     var page: Int,

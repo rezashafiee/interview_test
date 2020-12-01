@@ -2,7 +2,7 @@ package shafiee.mr.interviewtest.ui.places.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import shafiee.mr.interviewtest.model.Response
+import shafiee.mr.interviewtest.model.PlaceListResponse
 import shafiee.mr.interviewtest.model.persistence_models.PersistenceLocation
 import shafiee.mr.interviewtest.network.Resource
 import shafiee.mr.interviewtest.repository.PlacesListRepository
@@ -15,7 +15,7 @@ class PlacesListViewModel @Inject constructor(
     fun loadPlacesList(
         currentLocation: PersistenceLocation?,
         page: Int
-    ): LiveData<Resource<Response>> {
+    ): LiveData<Resource<PlaceListResponse>> {
         return placesListRepository.loadPlacesList(currentLocation, page)
     }
 }

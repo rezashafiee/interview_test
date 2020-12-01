@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import shafiee.mr.interviewtest.model.Data
 
-class PlacesListDataTypeConverter {
+class DataTypeConverter {
 
     @TypeConverter
     fun fromJson(json: String): Data {

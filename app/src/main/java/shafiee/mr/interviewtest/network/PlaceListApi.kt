@@ -3,7 +3,7 @@ package shafiee.mr.interviewtest.network
 import androidx.lifecycle.LiveData
 import retrofit2.http.GET
 import retrofit2.http.Query
-import shafiee.mr.interviewtest.model.Response
+import shafiee.mr.interviewtest.model.PlaceListResponse
 
 interface PlaceListApi {
 
@@ -15,10 +15,5 @@ interface PlaceListApi {
         @Query("ll") ll: String,
         @Query("limit") pageSize: String,
         @Query("offset") pageNumber: String
-    ): LiveData<ApiResponse<Response>>
-
-    @GET("")
-    fun getPlaceDetails(
-        @Query("VENUE_ID") placeId: String
-    ): LiveData<ApiResponse<Response>>
+    ): LiveData<ApiResponse<PlaceListResponse>>
 }

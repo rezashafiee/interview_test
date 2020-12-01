@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import shafiee.mr.interviewtest.AppExecutors
 import shafiee.mr.interviewtest.Constants
 import shafiee.mr.interviewtest.db.PlacesListDao
-import shafiee.mr.interviewtest.model.Response
+import shafiee.mr.interviewtest.model.PlaceListResponse
 import shafiee.mr.interviewtest.model.persistence_models.PersistenceLocation
 import shafiee.mr.interviewtest.network.ApiResponse
 import shafiee.mr.interviewtest.network.NetworkBoundResource
@@ -24,14 +24,14 @@ class PlacesListRepository @Inject constructor(
     fun loadPlacesList(
         currentLocation: PersistenceLocation?,
         page: Int
-    ): LiveData<Resource<Response>> {
+    ): LiveData<Resource<PlaceListResponse>> {
 
-        return object : NetworkBoundResource<Response, Response>(appExecutors) {
-            override fun saveCallResult(item: Response) {
+        return object : NetworkBoundResource<PlaceListResponse, PlaceListResponse>(appExecutors) {
+            override fun saveCallResult(item: PlaceListResponse) {
                 placesListDao.insert(item)
             }
 
-            override fun shouldFetch(data: Response?): Boolean {
+            override fun shouldFetch(data: PlaceListResponse?): Boolean {
 
                 val lastLocationLatitude = preferencesManager?.getLastLocationLat()
                 val lastLocationLongitude = preferencesManager?.getLastLocationLng()
@@ -62,12 +62,12 @@ class PlacesListRepository @Inject constructor(
                 }
             }
 
-            override fun loadFromDb(): LiveData<Response> {
+            override fun loadFromDb(): LiveData<PlaceListResponse> {
                 //return placesListDao.getAll()
                 return placesListDao.getByPage(page)
             }
 
-            override fun createCall(): LiveData<ApiResponse<Response>> {
+            override fun createCall(): LiveData<ApiResponse<PlaceListResponse>> {
 
                 return placesListApi.explorePlaces(
                     Constants.CLIENT_ID,
