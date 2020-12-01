@@ -29,7 +29,7 @@ class LocationUtils(
         locationRequest = LocationRequest.create().apply {
             interval = 30_000 // ms
             fastestInterval = 5_000 // ms
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         }
 
         locationCallback = object : LocationCallback() {
