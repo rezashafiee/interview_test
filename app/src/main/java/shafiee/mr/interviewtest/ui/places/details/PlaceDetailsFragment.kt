@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import shafiee.mr.interviewtest.R
 import shafiee.mr.interviewtest.base.BaseFragment
+import shafiee.mr.interviewtest.databinding.FragmentPlaceDetailsBinding
 
 class PlaceDetailsFragment : BaseFragment() {
+
+    private lateinit var binding: FragmentPlaceDetailsBinding
 
     companion object {
         fun newInstance() = PlaceDetailsFragment()
@@ -19,8 +21,9 @@ class PlaceDetailsFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_place_details, container, false)
+    ): View {
+        binding = FragmentPlaceDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
