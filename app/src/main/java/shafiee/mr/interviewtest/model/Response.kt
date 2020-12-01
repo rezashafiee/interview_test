@@ -13,5 +13,5 @@ data class Response(
 
     @Expose
     @SerializedName("response")
-    var placesListData: PlacesListData?
+    var data: Data?
 )

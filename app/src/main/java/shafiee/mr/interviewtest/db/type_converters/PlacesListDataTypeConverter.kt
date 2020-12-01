@@ -2,18 +2,18 @@ package shafiee.mr.interviewtest.db.type_converters
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import shafiee.mr.interviewtest.model.PlacesListData
+import shafiee.mr.interviewtest.model.Data
 
 class PlacesListDataTypeConverter {
 
     @TypeConverter
-    fun fromJson(json: String): PlacesListData {
-        return Gson().fromJson(json, PlacesListData::class.java)
+    fun fromJson(json: String): Data {
+        return Gson().fromJson(json, Data::class.java)
     }
 
     @TypeConverter
-    fun toJson(placesListData: PlacesListData): String {
-        return Gson().toJson(placesListData)
+    fun toJson(data: Data): String {
+        return Gson().toJson(data)
     }
 
 }

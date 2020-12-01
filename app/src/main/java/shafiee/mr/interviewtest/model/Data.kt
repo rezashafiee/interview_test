@@ -2,7 +2,7 @@ package shafiee.mr.interviewtest.model
 
 import com.google.gson.annotations.Expose
 
-data class PlacesListData(
+data class Data(
     @Expose
     var warning: Warning?,
     @Expose
@@ -18,6 +18,8 @@ data class PlacesListData(
     @Expose
     var suggestedBounds: SuggestedBounds?,
     @Expose
-    var groups: List<Group>?
+    var groups: List<Group>?,
+    @Expose
+    var venue: Venue?
 )
 

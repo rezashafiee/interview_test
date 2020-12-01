@@ -98,8 +98,8 @@ class PlacesListFragment : BaseFragment(), LocationSupportView {
                     }
                     Resource.Status.SUCCESS -> {
                         // just set the list
-                        println("Imchini  fetched location = $location and data = ${it.data?.placesListData?.groups}")
-                        val items = it.data?.placesListData?.groups?.get(0)?.items
+                        println("Imchini  fetched location = $location and data = ${it.data?.data?.groups}")
+                        val items = it.data?.data?.groups?.get(0)?.items
                         if (pageNumber > 1)
                             placesListAdapter?.updateList(items)
                         else

@@ -22,5 +22,23 @@ data class Venue(
     var popularityByGeo: Double?,
     @Expose
     @SerializedName("venuePage")
-    var venuePage: VenuePage?
-)
+    var venuePage: VenuePage?,
+    @Expose
+    @SerializedName("likes")
+    var likesInfo: LikesInfo?,
+    @Expose
+    @SerializedName("stats")
+    var statsInfo: StatsInfo?,
+    @Expose
+    var rating: String?,
+    @Expose
+    var ratingSignals: String?,
+    @Expose
+    var description: String?,
+    @Expose
+    var bestPhoto: BestPhoto?
+) {
+    @Expose
+    var ratingColor: String? = null
+        get() = "#$field"
+}

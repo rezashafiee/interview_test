@@ -16,4 +16,9 @@ interface PlaceListApi {
         @Query("limit") pageSize: String,
         @Query("offset") pageNumber: String
     ): LiveData<ApiResponse<Response>>
+
+    @GET("")
+    fun getPlaceDetails(
+        @Query("VENUE_ID") placeId: String
+    ): LiveData<ApiResponse<Response>>
 }
