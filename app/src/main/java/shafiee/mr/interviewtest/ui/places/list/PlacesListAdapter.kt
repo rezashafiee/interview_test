@@ -39,8 +39,8 @@ class PlacesListAdapter(
         }
     }
 
-    fun setList(list: List<Item>?) {
-        placeList = list?.toMutableList()!!
+    fun setList(list: List<Item>) {
+        placeList = list.toMutableList()
         notifyDataSetChanged()
     }
 }
