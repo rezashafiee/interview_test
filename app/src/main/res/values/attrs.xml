@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TextViewPlus">
+        <attr name="tvp_font" format="enum">
+            <enum name="SFUIDisplay_Bold" value="7" />
+            <enum name="SFUIDisplay_SemiBold" value="8" />
+            <enum name="SFUIDisplay_Regular" value="10" />
+            <enum name="SFUIDisplay_Light" value="11" />
+        </attr>
+    </declare-styleable>
+</resources>

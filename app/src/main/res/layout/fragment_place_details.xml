@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.places.details.PlaceDetailsFragment">
 
-    <TextView
+    <shafiee.mr.interviewtest.utils.custom_views.TextViewPlus
         android:id="@+id/textView_placeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Place name" />
 
-    <TextView
+    <shafiee.mr.interviewtest.utils.custom_views.TextViewPlus
         android:id="@+id/textView_placeDetail_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@id/textView_placeName"
         tools:text="Place detail 1" />
 
-    <TextView
+    <shafiee.mr.interviewtest.utils.custom_views.TextViewPlus
         android:id="@+id/textView_placeDetail_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,5 +38,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView_placeDetail_1"
         tools:text="Place detail 2" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

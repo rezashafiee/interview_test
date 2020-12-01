@@ -96,16 +96,21 @@ class PlacesListFragment : BaseFragment(), LocationSupportView, PlacesListFragme
             it.let {
                 when (it.status) {
                     Resource.Status.LOADING -> {
+                        binding.progressBar.visibility = View.VISIBLE
                     }
                     Resource.Status.SUCCESS -> {
+                        binding.progressBar.visibility = View.GONE
                         //println("Imchini  fetched location = $location and data = ${it.data?.data?.groups}")
                         val items = it.data?.data?.groups?.get(0)?.items
                         if (pageNumber > 1)
                             placesListAdapter?.updateList(items)
-                        else
+                        else if (items != null) {
                             placesListAdapter?.setList(items)
+                        }
                     }
                     Resource.Status.ERROR -> {
+                        binding.progressBar.visibility = View.GONE
+                        it.message?.let { message -> requireContext().shortToast(message) }
                     }
                 }
             }

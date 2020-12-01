@@ -10,6 +10,7 @@ import shafiee.mr.interviewtest.base.BaseFragment
 import shafiee.mr.interviewtest.databinding.FragmentPlaceDetailsBinding
 import shafiee.mr.interviewtest.model.PlaceDetailsResponse
 import shafiee.mr.interviewtest.network.Resource
+import shafiee.mr.interviewtest.utils.shortToast
 import shafiee.mr.interviewtest.viewmodel.ViewModelProviderFactory
 import javax.inject.Inject
 
@@ -50,13 +51,15 @@ class PlaceDetailsFragment : BaseFragment() {
             it.let {
                 when (it.status) {
                     Resource.Status.LOADING -> {
-
+                        binding.progressBar.visibility = View.VISIBLE
                     }
                     Resource.Status.SUCCESS -> {
+                        binding.progressBar.visibility = View.GONE
                         setUiValues(it.data)
                     }
                     Resource.Status.ERROR -> {
-
+                        binding.progressBar.visibility = View.GONE
+                        it.message?.let { message -> requireContext().shortToast(message) }
                     }
                 }
             }

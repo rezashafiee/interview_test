@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <shafiee.mr.interviewtest.utils.custom_views.TextViewPlus
             android:id="@+id/textView_placeName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -27,6 +27,7 @@
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="14sp"
+            app:tvp_font="SFUIDisplay_SemiBold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView_placeType"
